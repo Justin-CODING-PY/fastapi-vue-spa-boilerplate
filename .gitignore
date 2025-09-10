@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+.env
+.envrc
+.venv/
+*.egg-info/
+.ruff_cache/
+
+
+# Node
+node_modules/
+dist/
+package-lock.json
+.pnpm-store/
+
+# OS
+.DS_Store
+.vscode
+
+# Docker
+*.pid
+*.sock

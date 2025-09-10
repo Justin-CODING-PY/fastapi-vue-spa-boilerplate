@@ -1,0 +1,50 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      # Auto-fix ONLY imports; don't fail after fixing
+      - id: ruff
+        name: "ruff (imports: sort)"
+        args:
+          - --select
+          - I
+          - --fix-only
+      # Lint the rest (no auto-fix)
+      - id: ruff
+        name: "ruff (lint)"
+        args:
+          - --select=E,F,UP,B,C4,PIE,ISC
+          - --ignore=E501
+
+  -   repo: https://github.com/pre-commit/mirrors-mypy
+      rev: v1.10.0  # or the latest stable version
+      hooks:
+      - id: mypy
+        stages: [pre-push]
+        args: ["--explicit-package-bases", "backend"]
+        pass_filenames: false
+        additional_dependencies:
+          - django-stubs
+          - types-dj-database-url
+          - python-dotenv
+
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 25.1.0
+    hooks:
+      - id: black
+        args: [--skip-string-normalization]
+        exclude: '^.*/migrations/.*'
+
+  - repo: https://github.com/fluxility/pre-commit-django-migrations
+    rev: 87e3d923e78c366446805f1ad0b9ad581e414417
+    hooks:
+      - id: pre-commit-django-migrations
+        entry: python backend/manage.py makemigrations --check --dry-run
+        language: system  # use your local Python environment
+        pass_filenames: false
