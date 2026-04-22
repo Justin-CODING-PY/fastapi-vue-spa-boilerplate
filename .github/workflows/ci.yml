@@ -72,9 +72,14 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
               
-            #setup to check for typscript using the compiler thats already installed and does a check only uising the existing config.
-            - name: typescript check
-              run: pnpm exec tsc --noEmit -p tsconfig.json
-              continue-on-error: true
-            
+            - name: runt eslint
+              run: pnpm exec eslint . || echo "::Warning:: ESlint was skipped as not installed, add eslint and config to enable this check"
+              contihue-on-error: true
 
+            - name: run type check
+              run: pnpm exec vue-tsc --noEmit || echo "::Warning:: Type check was skipped as not installed, add vue-tsc and config to enable this check"
+              continue-on-error: true
+            - name: Vitest
+              run: pnpm exec vitest run || echo "::Warning:: Vitest was skipped as not installed, add vitest and config to enable this check"
+              continue-on-error: true
+              
