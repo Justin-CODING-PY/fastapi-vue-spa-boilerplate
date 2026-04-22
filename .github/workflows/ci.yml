@@ -24,7 +24,7 @@ jobs:
                 cache-dependency-path: backend/requirements.txt
             
             
-            #update pip first and the ninstall requuirments
+            #update pip first and then install requirements
             - name: Install dependencies
               run: |
                 pip install --upgrade pip
@@ -32,15 +32,15 @@ jobs:
                 pip install ruff mypy pytest
             
             
-            - name: ruff(using lint)
+            - name: Ruff(using lint)
               run: ruff check .
               continue-on-error: true
             
-            - name: mypy(using type check)
+            - name: MyPy(using type check)
               run: mypy app
               continue-on-error: true
 
-            - name: pytest
+            - name: PyTest
               run: pytest || true
 
             
@@ -72,14 +72,14 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
               
-            - name: runt eslint
-              run: pnpm exec eslint . || echo "::Warning:: ESlint was skipped as not installed, add eslint and config to enable this check"
-              contihue-on-error: true
+            - name: run EsLint
+              run: pnpm exec eslint . || echo "::warning:: ESlint was skipped as not installed, add eslint and config to enable this check"
+              continue-on-error: true
 
-            - name: run type check
-              run: pnpm exec vue-tsc --noEmit || echo "::Warning:: Type check was skipped as not installed, add vue-tsc and config to enable this check"
+            - name: TypeCheck
+              run: pnpm exec vue-tsc --noEmit || echo "::warning:: Type check was skipped as not installed, add vue-tsc and config to enable this check"
               continue-on-error: true
-            - name: Vitest
-              run: pnpm exec vitest run || echo "::Warning:: Vitest was skipped as not installed, add vitest and config to enable this check"
+            - name: ViTest
+              run: pnpm exec vitest run --passWithNoTests || echo "::warning:: Vitest was skipped as not installed, add vitest and config to enable this check"
               continue-on-error: true
-              
+
